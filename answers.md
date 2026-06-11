@@ -96,4 +96,12 @@ r-- = group permissions: `r`=read, `-`=no write,
 r-- = others permissions: `r`=read, `-`=no write, 
 `-`=no execute. Everyone else can only read.
 
+Q7 ::How is tree different from ls -R? When would a DevSecOps engineer run tree on a live server — what would they be looking for?
+ tree draws lines so you see parent/child folders instantly.
+ ls -R just lists each dir and  files one after another. 
+ tree gives a summary at the bottom . ls -R doesn't.
+ tree is like a map, ls -R is like a stack of folders
+
+### When a DevSecOps engineer runs tree on a live server + what they look for:
+They're looking for: unexpected files, wrong permissions, missing directories, or sensitive data in the wrong place.
 
