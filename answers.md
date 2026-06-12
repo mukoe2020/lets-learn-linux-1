@@ -105,3 +105,48 @@ Q7 ::How is tree different from ls -R? When would a DevSecOps engineer run tree 
 ### When a DevSecOps engineer runs tree on a live server + what they look for:
 They're looking for: unexpected files, wrong permissions, missing directories, or sensitive data in the wrong place.
 
+##Q8 ::: What is the difference between > and >>? Prove it — re-run the first echo with > instead of >>, then read the file. What happened? Restore the file. Why is confusing these two operators dangerous in a production log rotation script?
+
+> = overwrite. Wipes the file, then writes.
+>> = append. Adds to the end, keeps existing content.
+
+after overwritting the file now only cointains overwrite  all the 3 logs kines are gone .> deleted everything and put new ones  
+To restore the file will run all those echo commands again 
+What confusing is  if l mistenly use > instead of >> l might delete the entire logs files  which will cause loss of dat  and impossible to investigate  breaches 
+
+
+###Q9::: Task: Display the access log using two different reading commands — one from top to bottom, one from bottom to top.
+
+cat/less = reads from line 1 downward. Shows oldest entries first.
+tac = "cat" backwards. Reads from last line upward. Shows newest entries first.
+
+### In a real incident, a log has 80,000 lines and the most recent events are at the bottom — which do you reach for first?
+
+tac or tail. In an incident you want the most recent . Scrolling 80k lines from the top wastes time. tac goes to the   commands immediatly
+
+tail  defaults to 10 lines, so tail file works too. for the last commands if you flag it
+
+
+##Q10 :::  Use heredoc notation to append all four lines into logs/errors/error.log in one operation.
+###What is a heredoc and what does it solve over multiple echo commands?
+What is the difference between 'EOF' (quoted) and EOF (unquoted)? Set a variable DBNAME=cyphercore and test both — screenshot the outputs and explain what you observe.
+Why might someone on a compromised server prefer heredoc over opening nano or vim? What forensic traces does each method leave?
+
+Heredoc  meaning "here document". It pipes a block of text into a command. You define start << DELIM and end DELIM markers. Everything between gets sent as stdin
+
+'EOF' = literal. Prints Database is $DBNAME. Variables don't expand.
+EOF = interpreted. Prints Database is cyphercore. Shell expands $DBNAME.
+
+ Heredoc  leaves traces in .bash_history with the full content. No temp files. Fast, less obvious.
+nano/vim: Creates swap files .filename.swp, backup files filename~, updates atime/mtime, leaves .viminfo. More disk artifacts.
+Attacker prefers heredoc = stealthier. Defender notices vim because of the temp files + longer process runtime.
+
+
+###Q11 :::  Task: Open the error log using two different pager commands. Navigate and quit each one.
+
+###Key differences between the two? Which loads the entire file into memory first? On a server with 512MB RAM and a 3GB log — which do you use? List three keyboard shortcuts for less: how to search, jump to the end, and quit.
+
+less = scroll up/down with arrows, j/k. more = only forward, can't go back.less = doesn't load full file. more loads more upfront.less = search /pattern, jump G, quit q. more = limited navigation.
+
+more loads more aggressively. less streams the file and loads pages on demand.
+less.never use cat or editors on huge logs. less won't OOM the server because it reads chunks. more or vim might crash it.
